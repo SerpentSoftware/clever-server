@@ -1,7 +1,8 @@
 var JB = require( "jabber-server" );
 
+var main_user = new JB.User( "main@clever", "Main User" );
+
 JB.Server.prototype.initUserList = function( ) {
-    var main_user = new JB.User( "main@clever", "Main User" );
     var android_user = new JB.User( "android@clever", "Android User" );
     var kocsy = new JB.User( "kocsy@clever", "Kocsy" );
 
@@ -17,3 +18,9 @@ JB.Server.prototype.initUserList = function( ) {
 }
 
 var server = new JB.Server({ domain: "10.0.0.16", port: 5223 });
+
+server.on( 'registration-success', function( user ) {
+    console.log( "registration" + user.getKey() );
+
+    main_user.addBuddy( user );
+} );

@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/frenchie4111/clever",
   "dependencies": {
-    "jabber-server": "0.0.2"
+    "jabber-server": "0.0.3"
   }
 }

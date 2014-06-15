@@ -2,7 +2,7 @@
   "name": "clever",
   "version": "0.0.0",
   "description": "XMPP Chat for Android SMS Texting",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,5 +18,8 @@
   "homepage": "https://github.com/frenchie4111/clever",
   "dependencies": {
     "jabber-server": "0.0.4"
+  },
+  "window": {
+  	"frame": false
   }
 }

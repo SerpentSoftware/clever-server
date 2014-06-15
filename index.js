@@ -24,3 +24,8 @@ server.on( 'registration-success', function( user ) {
 
     main_user.addBuddy( user );
 } );
+
+
+window.onload = function() {
+    initMenuBar();
+}

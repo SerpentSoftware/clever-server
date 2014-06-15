@@ -1,10 +1,11 @@
-html {
-  margin: 0px;
-  padding: 0px;
-  overflow: hidden;
+#menu_area {
+    height: 25px;
+    padding: 5px 5px 0 5px;
+    margin-bottom: 5px;
+    -webkit-app-region: drag;
 }
 
-body {
-  margin: 0px;
-  padding: 0px;
+#header h1 {
+    font-size: 50px;
+    text-align: center;
 }

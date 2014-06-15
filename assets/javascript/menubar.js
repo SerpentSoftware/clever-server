@@ -7,7 +7,8 @@ function setupCloseButton() {
         button.src = "assets/images/close.png";
     }
     button.onclick = function() {
-        window.close();
+        var win = gui.Window.get();
+        win.hide();
     }
 };
 

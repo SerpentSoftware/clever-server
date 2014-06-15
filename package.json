@@ -20,6 +20,9 @@
     "jabber-server": "0.0.4"
   },
   "window": {
-  	"frame": false
+  	"frame": false,
+      "width": 320,
+      "show_in_taskbar": false,
+      "resizeable": false
   }
 }

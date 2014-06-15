@@ -26,6 +26,9 @@ server.on( 'registration-success', function( user ) {
 } );
 
 
+var win = require('nw.gui').Window.get();
+win.setResizable( false );
+
 window.onload = function() {
     initMenuBar();
 }

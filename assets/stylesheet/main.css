@@ -1,11 +1,54 @@
+body {
+    font-family: "mainfont", "Helvetica Neue", "HelveticaNeue", "Helvetica", "HelveticaLt", sans-serif;
+    background-image: url("../image/clever_background.png");
+}
+
 #menu_area {
-    height: 25px;
+    height: 15px;
     padding: 5px 5px 0 5px;
-    margin-bottom: 5px;
     -webkit-app-region: drag;
 }
 
 #header h1 {
+    color: white;
     font-size: 50px;
     text-align: center;
+}
+
+h4 {
+    font-size: 20px;
+    color: black;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.content_box {
+    margin: 20px;
+    padding: 10px;
+    background-color: white;
+}
+
+.text_input {
+    height: 25px;
+    font-size: 15px;
+    width: 260px;
+    margin-top: 10px;
+}
+
+#account_submit {
+    margin: 10px 0px 0 0px;
+}
+
+.button {
+    height: 25px;
+    width: 260px;
+    background-color: #417ECC;
+    color: white;
+    text-align: center;
+    padding-top: 9px;
+}
+
+.info {
+    margin: 10px 0 10px 0;
 }

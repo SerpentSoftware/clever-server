@@ -32,7 +32,6 @@ var win = require('nw.gui').Window.get();
 win.setResizable( false );
 
 window.onload = function() {
-    win.showDevTools();
     initMenuBar();
 
     startServer();

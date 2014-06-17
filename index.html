@@ -19,7 +19,7 @@
 </head>
 <body>
 	<div id="menu_area">
-		<img id="close" src="assets/images/close.png" />
+		<img id="close" src="assets/image/close.png" />
 	</div>
 	<div id="header">
 		<h1>
@@ -30,21 +30,21 @@
 		<h4>
 			Main Account Info
 		</h4>
-		<input class="text_input" type="text" />
-		<input class="text_input" type="password" />
+		<input class="text_input" type="text" id="account_username" />
+		<input class="text_input" type="password" id="account_password" />
 		<div id="account_submit" class="button">
-			Update Account
+			Create Account
 		</div>
 	</div>
-	<div class="content_box">
+	<div id="server_info" class="content_box">
 		<h4>
 			Server Info
 		</h4>
 		<div class="info">
-			<a>Ip Address: 10.0.0.16</a><br/>
+			<a>Ip Address: <a id="server_ip">No Server Running</a></a><br/>
 		</div>
 		<div class="info">
-			<a>Port: 5223</a>
+			<a>Port: <a id="server_port">No Server Running</a></a>
 		</div>
 	</div>
 </body>

@@ -1,4 +1,9 @@
-var server = require( "./lib/server" )
+var server = require( "./lib/server" ),
+    fs = require( 'fs' ),
+    gui = require( 'nw.gui' );
+
+var username = null;
+var password = null;
 
 var win = require('nw.gui').Window.get();
 win.setResizable( false );
@@ -15,23 +20,66 @@ function startServer( username, password ) {
     } );
 }
 
+var CONFIG_NAME = "clever_config.json";
+
+function getSettingsFilePath() {
+    var settings_path;
+    if( process.platform == 'darwin' ) {
+        var home = process.env[ "HOME" ]
+        settings_path = home + "/Library/Application Support/" + gui.App.manifest.name + "/";
+    }
+    try {
+        fs.mkdirSync( settings_path, 0766, function( err ) {} );
+    } catch (err) {}
+    console.log( "Settings File Path" + settings_path + CONFIG_NAME );
+    return settings_path + CONFIG_NAME;
+}
+
+function loadSettingsSync() {
+    try {
+        var data = fs.readFileSync(getSettingsFilePath()),
+            settingsObj;
+        settingsObj = JSON.parse(data);
+        username = settingsObj["username"];
+        password = settingsObj["password"];
+    } catch (err) {
+        console.log('There has been an error parsing your JSON.')
+        console.log(err);
+    }
+}
+
+function saveSettingsSync() {
+    var options = { "username": username,
+                    "password": password }
+    var data = JSON.stringify(options);
+
+    fs.writeFile(getSettingsFilePath(), data, function (err) {
+        if (err) {
+            console.log('There has been an error saving your configuration data.');
+            console.log(err.message);
+            return;
+        }
+        console.log('Configuration saved successfully.')
+    });
+}
+
 window.onload = function() {
-    var username = null;
-    var password = null;
     var main_account_username_field = document.getElementById( "account_username" );
     var main_account_password_field = document.getElementById( "account_password" );
+    var main_account_button = document.getElementById( "account_submit" );
 
-    // TODO: Should try to load username/password from settings file
-
+    loadSettingsSync();
     if( username != null && password != null ) {
-        main_account_username_field = username;
-        main_account_password_field = "michael9";
+        main_account_username_field.value = username;
+        main_account_password_field.value = "michael9";
+
         main_account_username_field.disabled = true;
         main_account_password_field.disabled = true;
+        main_account_button.innerHTML = "Edit Account";
+
         startServer( username, password );
     }
 
-    var main_account_button = document.getElementById( "account_submit" );
     main_account_button.onclick = function() {
         if( main_account_username_field.value != "" && main_account_username_field.value != null &&
             main_account_password_field.value != "" && main_account_password_field.value != null ) {
@@ -49,6 +97,8 @@ window.onload = function() {
             main_account_username_field.disabled = true;
             main_account_password_field.disabled = true;
             main_account_button.innerHTML = "Edit Account";
+
+            saveSettingsSync();
         }
     };
 

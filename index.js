@@ -2,14 +2,18 @@ var server = require( "./lib/server" ),
     fs = require( 'fs' ),
     gui = require( 'nw.gui' );
 
+var JB = null;
 var username = null;
 var password = null;
+var main_account_username_field;
+var main_account_password_field;
+var main_account_button;
 
 var win = require('nw.gui').Window.get();
 win.setResizable( false );
 
 function startServer( username, password ) {
-    var JB = server.startServer( username, password );
+    JB = server.startServer( username, password );
 
     JB.on( 'online', function() {
         var server_ip = document.getElementById( "server_ip" );
@@ -18,6 +22,18 @@ function startServer( username, password ) {
         var server_ip = document.getElementById( "server_port" );
         server_ip.innerHTML = server.port;
     } );
+}
+
+function stopServer() {
+    if( JB != null ) {
+        JB.shutdown( function() {
+            var server_ip = document.getElementById( "server_ip" );
+            server_ip.innerHTML = "No Server Running";
+
+            var server_ip = document.getElementById( "server_port" );
+            server_ip.innerHTML = "No Server Running";
+        } );
+    }
 }
 
 var CONFIG_NAME = "clever_config.json";
@@ -58,15 +74,51 @@ function saveSettingsSync() {
             console.log('There has been an error saving your configuration data.');
             console.log(err.message);
             return;
-        }
-        console.log('Configuration saved successfully.')
+        };
+        // console.log( 'Configuration saved successfully.' )
     });
 }
 
+function createAccount() {
+    if( main_account_username_field.value != "" && main_account_username_field.value != null &&
+        main_account_password_field.value != "" && main_account_password_field.value != null ) {
+        console.log( "createAccount" );
+        username = main_account_username_field.value;
+
+        if( username.indexOf( "@" ) == -1 ) {
+            username = username + "@clever";
+            main_account_username_field.value = username;
+        }
+
+        password = server.getHash( main_account_password_field.value );
+
+        startServer( username, password );
+
+        main_account_username_field.disabled = true;
+        main_account_password_field.disabled = true;
+        main_account_button.innerHTML = "Edit Account";
+        main_account_button.onclick = editAccount;
+
+        saveSettingsSync();
+    }
+}
+
+function editAccount() {
+    console.log( "saveAccount" );
+    stopServer();
+
+    main_account_username_field.disabled = false;
+    main_account_password_field.disabled = false;
+    main_account_password_field.value = "";
+    main_account_button.innerHTML = "Save Account";
+    main_account_button.onclick = createAccount;
+}
+
 window.onload = function() {
-    var main_account_username_field = document.getElementById( "account_username" );
-    var main_account_password_field = document.getElementById( "account_password" );
-    var main_account_button = document.getElementById( "account_submit" );
+    main_account_username_field = document.getElementById( "account_username" );
+    main_account_password_field = document.getElementById( "account_password" );
+    main_account_button = document.getElementById( "account_submit" );
+    main_account_button.onclick = createAccount;
 
     loadSettingsSync();
     if( username != null && password != null ) {
@@ -76,31 +128,10 @@ window.onload = function() {
         main_account_username_field.disabled = true;
         main_account_password_field.disabled = true;
         main_account_button.innerHTML = "Edit Account";
+        main_account_button.onclick = editAccount;
 
         startServer( username, password );
     }
-
-    main_account_button.onclick = function() {
-        if( main_account_username_field.value != "" && main_account_username_field.value != null &&
-            main_account_password_field.value != "" && main_account_password_field.value != null ) {
-            username = main_account_username_field.value;
-
-            if( !(new String(username)).indexOf( "@" ) != -1 ) {
-                username = username + "@clever";
-                main_account_username_field.value = username;
-            }
-
-            password = main_account_password_field.value;
-
-            startServer( username, password );
-
-            main_account_username_field.disabled = true;
-            main_account_password_field.disabled = true;
-            main_account_button.innerHTML = "Edit Account";
-
-            saveSettingsSync();
-        }
-    };
 
     initMenuBar();
 }

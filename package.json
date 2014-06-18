@@ -18,7 +18,7 @@
   "homepage": "https://github.com/frenchie4111/clever",
   "dependencies": {
     "ip": "^0.3.0",
-    "jabber-server": "0.0.4",
+    "xmpp-chat-server": "*",
     "node-sha256": "^0.1.1"
   },
   "window": {
